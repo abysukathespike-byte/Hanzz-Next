@@ -5,192 +5,204 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#000000" />
   <title>Delta Key Bypasser — HanzzSecurity</title>
-  <!-- Pake Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <!-- Font Google -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
   <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body { background-color: #000; min-height: 100vh; color: #fff; margin: 0; overflow-x: hidden; font-family: 'Inter', sans-serif; }
-    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    /* ─── RESET & DASAR ─── */
+    :root { color-scheme: dark; --font-sans: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #000000; color: #ffffff; font-family: var(--font-sans); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
     
+    /* ─── CANVAS BACKGROUND ─── */
     #network-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.6; }
     
-    .fade-up { opacity: 0; transform: translateY(20px); animation: fadeUp .8s cubic-bezier(.2,.75,.25,1) forwards; }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    /* ─── CONTAINER UTAMA ─── */
+    .wrapper { max-width: 1440px; margin: 0 auto; min-height: 100vh; padding: 0 20px; position: relative; z-index: 10; transition: all 0.7s ease; }
+    .wrapper.narrow { max-width: 1000px; }
+
+    /* ─── HEADER ─── */
+    header { display: flex; align-items: center; justify-content: space-between; height: 76px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #a1a1aa; font-size: 14px; font-weight: 500; text-decoration: none; transition: 0.2s; }
+    .back-link:hover { color: #fff; }
+    .back-link i { transition: transform 0.2s; }
+    .back-link:hover i { transform: translateX(-4px); }
     
-    .execute-btn { transition: all .3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
-    .execute-btn:hover:not(:disabled) { box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.3); transform: translateY(-2px); background-color: #fff; color: #000; }
+    .brand-title { position: absolute; left: 50%; transform: translateX(-50%); font-size: 14px; font-weight: 800; letter-spacing: 0.25em; color: #fff; }
+    .brand-title span { color: #52525b; }
     
-    .terminal-line { opacity: 0; transform: translateX(-10px); animation: lineIn .3s ease forwards; }
+    .credit-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #d4d4d8; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; backdrop-filter: blur(10px); }
+    .credit-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* ─── HERO SECTION ─── */
+    .hero { padding: 60px 0 40px; text-align: center; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 24px; }
+    .badge-dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; box-shadow: 0 0 12px #fff; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    
+    .hero h1 { font-size: clamp(32px, 6vw, 64px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
+    .hero p { color: #a1a1aa; font-size: 15px; line-height: 1.7; max-width: 600px; margin: 0 auto; }
+
+    /* ─── FORM INPUT ─── */
+    .form-container { max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; backdrop-filter: blur(20px); box-shadow: 0 0 50px rgba(255,255,255,0.05); transition: 0.3s; }
+    .form-container:hover { border-color: rgba(255,255,255,0.3); box-shadow: 0 0 60px rgba(255,255,255,0.1); }
+    
+    .input-label { display: block; color: #a1a1aa; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
+    .input-group { position: relative; margin-bottom: 20px; }
+    .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #71717a; font-size: 18px; }
+    .input-group input { width: 100%; height: 56px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 0 16px 0 48px; color: #fff; font-family: var(--font-mono); font-size: 13px; outline: none; transition: 0.3s; }
+    .input-group input:focus { border-color: rgba(255,255,255,0.8); box-shadow: 0 0 0 3px rgba(255,255,255,0.1); }
+    
+    .error-text { display: none; color: #f87171; font-size: 11px; font-weight: 500; margin-top: -10px; margin-bottom: 16px; }
+    .error-text.show { display: block; }
+
+    .submit-btn { width: 100%; height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #ffffff; color: #000000; border: none; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.3s; }
+    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ─── WORKSPACE (CONSOLE & PREVIEW) ─── */
+    #workspaceView { display: none; padding-top: 40px; animation: slideUpFade 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+    #workspaceView.active { display: block; }
+    @keyframes slideUpFade { from { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+
+    .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 1024px) { .grid-layout { grid-template-columns: 1fr 1fr; } }
+
+    /* Card Style */
+    .panel-card { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; backdrop-filter: blur(20px); overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .panel-title { font-size: 13px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+    
+    /* Terminal */
+    .terminal-body { flex: 1; min-height: 240px; padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; background: #000; overflow-y: auto; }
+    .terminal-line { opacity: 0; transform: translateX(-10px); animation: lineIn 0.3s ease forwards; margin-bottom: 8px; }
     @keyframes lineIn { to { opacity: 1; transform: translateX(0); } }
+    .text-muted { color: #71717a; }
+    .text-white { color: #fff; font-weight: 700; }
+    .text-red { color: #f87171; }
+
+    /* Browser Preview */
+    .browser-bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
+    .browser-dots span:last-child { background: #fff; }
+    .browser-url { flex: 1; height: 32px; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; color: #a1a1aa; }
     
-    .spin { animation: spin 1s linear infinite; }
+    .preview-stage { position: relative; flex: 1; min-height: 350px; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
+    .loading-box { text-align: center; }
+    .spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     
-    .workspace-enter { animation: slideUpFade .6s cubic-bezier(0.16,1,0.3,1) both; }
-    @keyframes slideUpFade { from { opacity: 0; transform: translateY(50px) scale(0.95); filter: blur(10px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+    #previewFrame { width: 100%; height: 100%; border: none; background: #fff; display: none; position: absolute; inset: 0; }
     
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: 0.3s; }
+    .modal-overlay.show { opacity: 1; pointer-events: auto; }
+    .modal-content { background: #09090b; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; width: 100%; max-width: 400px; padding: 24px; transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    .modal-overlay.show .modal-content { transform: translateY(0) scale(1); }
+
+    /* Utility */
+    .hidden { display: none !important; }
     .bg-blur { filter: blur(15px); opacity: 0; pointer-events: none; transition: all 0.6s ease; }
-    .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .3s ease; }
-    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
-    .modal-card { transform: translateY(10px) scale(.95); transition: transform .3s cubic-bezier(0.34,1.56,0.64,1); }
-    .modal-backdrop.open .modal-card { transform: translateY(0) scale(1); }
-    
-    input:focus { outline: none; border-color: rgba(255,255,255,0.8); box-shadow: 0 0 0 3px rgba(255,255,255,0.1); }
   </style>
 </head>
-<body class="antialiased selection:bg-white selection:text-black">
+<body class="font-sans antialiased text-white selection:bg-white selection:text-black">
 
   <canvas id="network-bg"></canvas>
 
-  <div id="mainWrapper" class="mx-auto min-h-screen max-w-[1440px] px-5 sm:px-8 transition-all duration-700 relative z-10">
-    
-    <header class="fade-up flex h-[76px] items-center justify-between border-b border-white/10" style="animation-delay: .04s">
-      <a href="/" class="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition hover:text-white">
-        <i class="fa-solid fa-arrow-left"></i><span>Back</span>
-      </a>
-      <a href="/" class="absolute left-1/2 -translate-x-1/2 text-[14px] font-extrabold tracking-[.25em] text-white">
-        HANZZ<span class="text-zinc-600">SECURITY</span>
-      </a>
-      <button id="creditButton" class="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-black/50 px-4 py-2.5 text-xs font-bold text-zinc-300 transition hover:border-white hover:bg-white/10 hover:text-white backdrop-blur-md">
-        <i class="fa-solid fa-users"></i> Credits
-      </button>
+  <div id="mainWrapper" class="wrapper">
+    <!-- HEADER -->
+    <header>
+      <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+      <div class="brand-title">HANZZ<span>SECURITY</span></div>
+      <button id="creditButton" class="credit-btn"><i class="fa-solid fa-users"></i> Credits</button>
     </header>
 
-    <main id="initialView" class="pb-16 pt-16 sm:pt-24 transition-all duration-700">
-      <section class="fade-up mx-auto mb-12 max-w-3xl text-center" style="animation-delay: .12s">
-        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-[11px] font-bold tracking-wide text-white backdrop-blur-sm">
-          <span class="h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,1)] animate-pulse"></span>
-          DELTA EXECUTOR <span class="text-zinc-600">/</span> KEY BYPASSER
-        </div>
-        <h1 class="text-4xl font-extrabold tracking-tighter text-white sm:text-[64px] leading-tight">
-          Delta Key Bypasser
-        </h1>
-        <p class="mx-auto mt-6 max-w-xl text-[15px] leading-7 text-zinc-400">
-          Dapatkan akses instan tanpa harus menyelesaikan link redirect yang panjang. Masukkan URL Key Delta di bawah ini.
-        </p>
-      </section>
+    <!-- SECTION AWAL -->
+    <main id="initialView">
+      <div class="hero">
+        <div class="badge"><span class="badge-dot"></span> DELTA EXECUTOR / KEY BYPASSER</div>
+        <h1>Delta Key Bypasser</h1>
+        <p>Dapatkan akses instan tanpa harus menyelesaikan link redirect yang panjang. Masukkan URL Key Delta di bawah ini.</p>
+      </div>
 
-      <section class="fade-up mx-auto max-w-xl" style="animation-delay: .2s">
-        <div class="rounded-2xl border border-white/10 bg-black/60 p-6 shadow-[0_0_50px_rgba(255,255,255,0.05)] backdrop-blur-xl">
-          <form id="analyzerForm" class="space-y-5">
-            <div>
-              <label class="text-xs text-zinc-400 mb-2 block font-bold tracking-wider">
-                <i class="fa-solid fa-link mr-1"></i> MASUKKAN LINK KEY DELTA
-              </label>
-              <div class="relative">
-                <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-lg"></i>
-                <input id="urlInput" type="url" inputmode="url" spellcheck="false" placeholder="https://gateway.platoboost.com/a/..." class="h-14 w-full rounded-xl border border-white/20 bg-black/50 pl-12 pr-4 font-mono text-[13px] text-white placeholder:text-zinc-600 transition-all" required />
-              </div>
-              <p id="inputError" class="hidden text-[11px] text-red-400 mt-2 font-medium">
-                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Masukkan URL yang valid (http/https).
-              </p>
-            </div>
-            
-            <button id="executeButton" type="submit" class="execute-btn flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-white text-sm font-extrabold text-black hover:bg-zinc-200 disabled:opacity-50">
-              <i id="executeIcon" class="fa-solid fa-bolt"></i> <span id="executeText">Bypass Key Sekarang</span>
-            </button>
-          </form>
-        </div>
-      </section>
+      <div class="form-container">
+        <form id="analyzerForm">
+          <label class="input-label"><i class="fa-solid fa-link mr-1"></i> MASUKKAN LINK KEY DELTA</label>
+          <div class="input-group">
+            <i class="fa-solid fa-key"></i>
+            <input id="urlInput" type="url" placeholder="https://gateway.platoboost.com/a/..." required />
+          </div>
+          <p id="inputError" class="error-text"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Masukkan URL yang valid (http/https).</p>
+          <button id="executeButton" type="submit" class="submit-btn">
+            <i id="executeIcon" class="fa-solid fa-bolt"></i> <span id="executeText">Bypass Key Sekarang</span>
+          </button>
+        </form>
+      </div>
     </main>
 
-    <main id="workspaceView" class="hidden pb-16 pt-10">
-      <section class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        
-        <!-- KIRI: CONSOLE -->
-        <div class="rounded-2xl border border-white/10 bg-black/60 p-5 shadow-2xl backdrop-blur-xl">
-          <h2 class="text-sm font-extrabold text-white mb-4 flex items-center gap-2 tracking-widest">
-            <i class="fa-solid fa-terminal"></i> EXECUTION TERMINAL
-          </h2>
-          <div class="overflow-hidden rounded-xl border border-white/20 bg-black">
-            <div class="flex h-11 items-center justify-between border-b border-white/10 px-4 bg-zinc-950">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-zinc-700"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-zinc-600"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,1)]"></span>
-              </div>
-              <span class="font-mono text-[10px] text-zinc-400">engine@hanzz</span>
-            </div>
-            <div id="terminal" class="min-h-[240px] space-y-3 p-5 font-mono text-[12px] leading-relaxed">
-              <div class="text-zinc-500">HanzzSecurity <span class="text-white font-bold">v2.0</span></div>
-              <div class="text-zinc-500">Ready<span class="animate-pulse text-white">_</span></div>
-            </div>
-            <div class="flex items-center justify-between border-t border-white/10 px-4 py-3 bg-zinc-950">
-              <span class="font-mono text-[10px] text-zinc-500">STATUS</span>
-              <span id="consoleStatus" class="font-mono text-[10px] text-zinc-500">IDLE</span>
-            </div>
+    <!-- SECTION WORKSPACE -->
+    <main id="workspaceView">
+      <div class="grid-layout">
+        <!-- KIRI: TERMINAL -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fa-solid fa-terminal"></i> EXECUTION TERMINAL</div>
+            <div style="font-family: var(--font-mono); font-size: 10px; color: #71717a;">bypass-engine</div>
+          </div>
+          <div id="terminal" class="terminal-body">
+            <div class="text-muted">HanzzSecurity <span class="text-white">v2.0</span></div>
+            <div class="text-muted">Ready<span class="text-white">_</span></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding: 12px 16px; background: #09090b; border-top: 1px solid rgba(255,255,255,0.1); font-family: var(--font-mono); font-size: 10px; color: #71717a;">
+            <span>STATUS</span><span id="consoleStatus">IDLE</span>
           </div>
         </div>
 
         <!-- KANAN: PREVIEW -->
-        <div class="flex h-full min-h-[400px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/60 shadow-2xl backdrop-blur-xl">
-          <div class="flex h-[54px] shrink-0 items-center gap-3 border-b border-white/10 px-4 bg-zinc-950">
-            <div class="flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-zinc-700"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-zinc-600"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
-            </div>
-            <div class="flex h-8 flex-1 items-center justify-center gap-2 rounded-md border border-white/10 bg-black px-3">
-              <i class="fa-solid fa-lock text-zinc-500 text-[10px]"></i>
-              <span id="previewAddress" class="truncate font-mono text-[11px] text-zinc-400">delta-key://processing</span>
-            </div>
+        <div class="panel-card">
+          <div class="browser-bar">
+            <div class="browser-dots"><span></span><span></span><span></span></div>
+            <div class="browser-url"><i class="fa-solid fa-lock" style="font-size:10px;"></i> <span id="previewAddress">delta-key://processing</span></div>
           </div>
-
-          <div id="previewStage" class="relative flex flex-1 items-center justify-center overflow-hidden bg-black/40">
-            <div id="loadingState" class="w-full max-w-xs px-8 text-center">
-              <i class="fa-solid fa-circle-notch spin text-4xl text-white mb-6 block"></i>
-              <p class="text-sm font-extrabold text-white tracking-wide">BYPASSING DELTA KEY</p>
-              <p class="mt-2 text-xs text-zinc-500">Tunggu sebentar...</p>
-              <div class="mt-6 h-1.5 overflow-hidden rounded-full bg-zinc-900">
-                <div id="progressBar" class="h-full w-0 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,1)]" style="animation: progress 3s forwards;"></div>
-              </div>
+          <div class="preview-stage">
+            <div id="loadingState" class="loading-box">
+              <div class="spinner"></div>
+              <div style="font-size: 13px; font-weight: 800; margin-bottom: 6px;">BYPASSING DELTA KEY</div>
+              <div style="font-size: 11px; color: #71717a;">Tunggu sebentar...</div>
             </div>
-            <div id="frameWrap" class="absolute inset-0 hidden bg-white">
-              <iframe id="previewFrame" class="h-full w-full border-0" src="about:blank" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
-            </div>
+            <iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
           </div>
-          
-          <div class="flex min-h-[46px] items-center justify-between border-t border-white/10 px-4 bg-zinc-950">
-            <div class="flex items-center gap-2">
-              <span id="previewDot" class="h-2 w-2 rounded-full bg-white animate-pulse"></span>
-              <span id="previewStatus" class="text-[10px] text-zinc-400 font-bold tracking-wide">Processing URL...</span>
-            </div>
-            <span class="font-mono text-[10px] text-zinc-600">SECURE</span>
+          <div style="display:flex; justify-content:space-between; padding: 12px 16px; background: #09090b; border-top: 1px solid rgba(255,255,255,0.1); font-size: 10px; color: #a1a1aa;">
+            <div style="display:flex; align-items:center; gap:6px;"><span id="previewDot" style="width:6px; height:6px; background:#fff; border-radius:50%;"></span> <span id="previewStatus">Processing...</span></div>
+            <span style="font-family: var(--font-mono);">SECURE</span>
           </div>
         </div>
-
-      </section>
+      </div>
     </main>
-
   </div>
 
   <!-- MODAL -->
-  <div id="creditModal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-5 backdrop-blur-md">
-    <div class="modal-card w-full max-w-sm rounded-2xl border border-white/20 bg-zinc-950 p-6 shadow-2xl">
-      <div class="mb-6 flex items-start justify-between">
+  <div id="creditModal" class="modal-overlay">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
         <div>
-          <p class="font-mono text-[10px] tracking-[.2em] text-zinc-400">THE PEOPLE BEHIND IT</p>
-          <h2 class="mt-2 text-xl font-extrabold text-white">Project Credits</h2>
+          <div style="font-family: var(--font-mono); font-size: 10px; color: #a1a1aa; letter-spacing: 2px;">THE PEOPLE BEHIND IT</div>
+          <h2 style="font-size: 20px; font-weight: 800; margin-top: 4px;">Project Credits</h2>
         </div>
-        <button id="closeModal" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button id="closeModal" style="background:none; border:none; color:#71717a; cursor:pointer; font-size: 18px;"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="space-y-3">
-        <div class="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4">
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-lg font-extrabold text-black">H</div>
-          <div><p class="text-sm font-bold text-white">Hanzz</p><p class="mt-0.5 text-xs text-zinc-400">Founder & Dev</p></div>
+      <div style="display:flex; flex-direction:column; gap: 12px;">
+        <div style="display:flex; align-items:center; gap: 16px; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+          <div style="width: 48px; height: 48px; background: #fff; color: #000; display:flex; align-items:center; justify-content:center; border-radius: 10px; font-weight: 800; font-size: 20px;">H</div>
+          <div><div style="font-weight: 700; font-size: 14px;">Hanzz</div><div style="font-size: 11px; color: #a1a1aa;">Founder & Dev</div></div>
         </div>
-        <div class="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4">
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800 text-lg font-extrabold text-white">Y</div>
-          <div><p class="text-sm font-bold text-white">Yummy</p><p class="mt-0.5 text-xs text-zinc-400">Web Builder</p></div>
+        <div style="display:flex; align-items:center; gap: 16px; background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+          <div style="width: 48px; height: 48px; background: #3f3f46; color: #fff; display:flex; align-items:center; justify-content:center; border-radius: 10px; font-weight: 800; font-size: 20px;">Y</div>
+          <div><div style="font-weight: 700; font-size: 14px;">Yummy</div><div style="font-size: 11px; color: #a1a1aa;">Web Builder</div></div>
         </div>
       </div>
-      <button id="doneModal" class="mt-6 h-11 w-full rounded-xl bg-white text-xs font-extrabold text-black">Tutup</button>
+      <button id="doneModal" style="width:100%; height: 44px; background:#fff; color:#000; border:none; border-radius: 10px; font-weight: 800; margin-top: 24px; cursor:pointer;">Tutup</button>
     </div>
   </div>
 
@@ -250,12 +262,11 @@
     const terminal = document.getElementById('terminal');
     const consoleStatus = document.getElementById('consoleStatus');
     const loadingState = document.getElementById('loadingState');
-    const frameWrap = document.getElementById('frameWrap');
     const previewFrame = document.getElementById('previewFrame');
     const previewAddress = document.getElementById('previewAddress');
     const previewStatus = document.getElementById('previewStatus');
     const previewDot = document.getElementById('previewDot');
-    const progressBar = document.getElementById('progressBar');
+    
     const initialView = document.getElementById('initialView');
     const workspaceView = document.getElementById('workspaceView');
     const mainWrapper = document.getElementById('mainWrapper');
@@ -263,9 +274,9 @@
     let timers = [];
     function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
-    function addLog(message, color = 'text-zinc-400') {
+    function addLog(message, colorClass = 'text-muted') {
       const line = document.createElement('div');
-      line.className = `terminal-line ${color}`;
+      line.className = `terminal-line ${colorClass}`;
       line.innerHTML = message;
       terminal.appendChild(line);
       terminal.scrollTop = terminal.scrollHeight;
@@ -274,7 +285,7 @@
     function setLoading(isLoading) {
       executeButton.disabled = isLoading;
       if (isLoading) {
-        executeIcon.className = 'fa-solid fa-circle-notch spin';
+        executeIcon.className = 'fa-solid fa-circle-notch fa-spin';
         executeText.textContent = 'Processing...';
       } else {
         executeIcon.className = 'fa-solid fa-bolt';
@@ -287,29 +298,28 @@
       const targetUrl = input.value.trim();
 
       if (!targetUrl || !targetUrl.startsWith('http')) {
-        inputError.classList.remove('hidden');
+        inputError.classList.add('show');
         return;
       }
-      inputError.classList.add('hidden');
+      inputError.classList.remove('show');
       clearTimers();
 
-      // Animasi Pindah Halaman
       initialView.classList.add('bg-blur');
       
       setTimeout(() => {
         initialView.classList.add('hidden');
-        workspaceView.classList.remove('hidden');
-        workspaceView.classList.add('workspace-enter');
+        mainWrapper.classList.add('narrow');
+        workspaceView.classList.add('active');
         
         terminal.innerHTML = '';
         consoleStatus.textContent = 'RUNNING';
-        consoleStatus.className = 'font-mono text-[10px] text-white font-bold';
+        consoleStatus.style.color = '#fff';
         setLoading(true);
 
         loadingState.classList.remove('hidden');
-        frameWrap.classList.add('hidden');
+        previewFrame.style.display = 'none';
         previewAddress.textContent = 'bypassing://delta-key';
-        previewStatus.textContent = 'Connecting to API...';
+        previewStatus.textContent = 'Connecting...';
 
         const logs = [
           '> Initializing Delta bypass module...',
@@ -320,12 +330,11 @@
 
         logs.forEach((log, index) => {
           timers.push(setTimeout(() => {
-            addLog(log, index === 3 ? 'text-white font-bold' : 'text-zinc-400');
+            addLog(log, index === 3 ? 'text-white' : 'text-muted');
             if (index === 2) previewStatus.textContent = 'API Processing...';
           }, 600 * (index + 1)));
         });
 
-        // Nembak API Beneran
         fetch(`${API_ENDPOINT}?url=${encodeURIComponent(targetUrl)}&api_key=${API_KEY}`)
           .then(res => {
              if(!res.ok) throw new Error("Server error " + res.status);
@@ -334,20 +343,19 @@
           .then(data => {
             timers.push(setTimeout(() => {
               if (data.status === 'success' && data.result && data.result.destination) {
-                addLog('<i class="fa-solid fa-check-circle mr-1"></i> [SUCCESS] Destination found!', 'text-white font-bold');
-                addLog(`<i class="fa-solid fa-arrow-right mr-1"></i> Redirecting preview...`, 'text-zinc-500');
+                addLog('<i class="fa-solid fa-check-circle mr-1"></i> [SUCCESS] Destination found!', 'text-white');
+                addLog(`<i class="fa-solid fa-arrow-right mr-1"></i> Redirecting preview...`, 'text-muted');
                 
                 consoleStatus.textContent = 'COMPLETE';
-                consoleStatus.className = 'font-mono text-[10px] text-white font-bold';
                 setLoading(false);
 
                 loadingState.classList.add('hidden');
-                frameWrap.classList.remove('hidden');
+                previewFrame.style.display = 'block';
                 previewStatus.textContent = 'Preview loaded';
-                previewDot.className = 'h-2 w-2 rounded-full bg-white';
+                previewDot.style.background = '#34d399';
                 
                 const destUrl = data.result.destination;
-                previewAddress.textContent = destUrl.replace('https://','').substring(0, 30) + '...';
+                previewAddress.textContent = destUrl.replace('https://','').substring(0, 25) + '...';
                 previewFrame.src = destUrl;
               } else {
                 throw new Error(data.message || "Gagal bypass key.");
@@ -356,28 +364,28 @@
           })
           .catch(err => {
             timers.push(setTimeout(() => {
-              addLog(`<i class="fa-solid fa-triangle-exclamation mr-1"></i> [ERROR] ${err.message}`, 'text-red-400 font-bold');
+              addLog(`<i class="fa-solid fa-triangle-exclamation mr-1"></i> [ERROR] ${err.message}`, 'text-red');
               consoleStatus.textContent = 'FAILED';
-              consoleStatus.className = 'font-mono text-[10px] text-red-500 font-bold';
+              consoleStatus.style.color = '#f87171';
               setLoading(false);
               
               loadingState.classList.add('hidden');
-              previewStatus.textContent = 'Failed to fetch';
-              previewDot.className = 'h-2 w-2 rounded-full bg-red-500';
+              previewStatus.textContent = 'Failed';
+              previewDot.style.background = '#f87171';
             }, 1500));
           });
 
       }, 400);
     });
 
-    input.addEventListener('input', () => inputError.classList.add('hidden'));
+    input.addEventListener('input', () => inputError.classList.remove('show'));
 
     // Modal
     const modal = document.getElementById('creditModal');
-    document.getElementById('creditButton').addEventListener('click', () => modal.classList.add('open'));
-    document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('open'));
-    document.getElementById('doneModal').addEventListener('click', () => modal.classList.remove('open'));
-    modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('open') });
+    document.getElementById('creditButton').addEventListener('click', () => modal.classList.add('show'));
+    document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('show'));
+    document.getElementById('doneModal').addEventListener('click', () => modal.classList.remove('show'));
+    modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('show') });
   </script>
 </body>
 </html>
