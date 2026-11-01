@@ -23,7 +23,10 @@ const nextConfig = {
     return {
       beforeFiles: [
         { source: '/', destination: '/index.html' },
-        { source: '/bypass-delta', destination: '/bypass-delta.html' }
+        { source: '/bypass-delta', destination: '/bypass-delta.html' },
+        { source: '/pp', destination: '/index.html' },
+        { source: '/t-o-u', destination: '/index.html' },
+        { source: '/api/config.js', destination: '/api/config' }
       ]
     };
   }
