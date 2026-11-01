@@ -11,23 +11,22 @@
   <style>
     :root { color-scheme: dark; --font-sans: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #000000; color: #ffffff; font-family: var(--font-sans); min-height: 100vh; overflow-x: hidden; }
+    body { background-color: #000000; color: #ffffff; font-family: var(--font-sans); min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; }
     
     #network-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.6; }
-    .wrapper { max-width: 1440px; margin: 0 auto; min-height: 100vh; padding: 0 20px; position: relative; z-index: 10; transition: all 0.7s ease; }
-    .wrapper.narrow { max-width: 1000px; }
+    .wrapper { max-width: 1000px; width: 100%; min-height: 100vh; padding: 0 20px; position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: center; transition: all 0.5s ease; }
 
     /* Header */
-    header { display: flex; align-items: center; justify-content: space-between; height: 76px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    header { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; height: 76px; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .back-link { display: inline-flex; align-items: center; gap: 8px; color: #a1a1aa; font-size: 14px; font-weight: 500; text-decoration: none; transition: 0.2s; }
     .back-link:hover { color: #fff; }
-    .brand-title { position: absolute; left: 50%; transform: translateX(-50%); font-size: 14px; font-weight: 800; letter-spacing: 0.25em; color: #fff; }
+    .brand-title { font-size: 14px; font-weight: 800; letter-spacing: 0.25em; color: #fff; position: absolute; left: 50%; transform: translateX(-50%); }
     .brand-title span { color: #52525b; }
     .credit-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #d4d4d8; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; backdrop-filter: blur(10px); }
     .credit-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); color: #fff; }
 
     /* Hero */
-    .hero { padding: 60px 0 40px; text-align: center; }
+    .hero { padding: 100px 0 40px; text-align: center; }
     .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 24px; }
     .badge-dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; box-shadow: 0 0 12px #fff; animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
@@ -46,48 +45,56 @@
     .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Workspace Grid */
-    #workspaceView { display: none; padding-top: 40px; animation: slideUpFade 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+    /* Workspace Layout (Split Screen) */
+    #workspaceView { display: none; width: 100%; padding-top: 100px; padding-bottom: 40px; animation: slideUpFade 0.5s ease both; }
     #workspaceView.active { display: block; }
-    @keyframes slideUpFade { from { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+    @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
-    @media (min-width: 1024px) { .grid-layout { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .grid-layout { grid-template-columns: 350px 1fr; } }
 
-    /* Panels */
+    /* Panel Console */
     .panel-card { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; backdrop-filter: blur(20px); overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
     .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.1); }
     
-    .terminal-body { flex: 1; min-height: 280px; max-height: 400px; padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; background: #000; overflow-y: auto; }
-    .terminal-line { opacity: 0; transform: translateX(-10px); animation: lineIn 0.3s ease forwards; margin-bottom: 8px; }
+    .terminal-body { min-height: 300px; max-height: 400px; padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; background: #000; overflow-y: auto; }
+    .terminal-line { opacity: 0; transform: translateX(-10px); animation: lineIn 0.3s ease forwards; margin-bottom: 8px; display: flex; gap: 8px; }
     @keyframes lineIn { to { opacity: 1; transform: translateX(0); } }
     .text-muted { color: #71717a; }
     .text-white { color: #fff; font-weight: 700; }
     .text-red { color: #f87171; }
     .text-green { color: #34d399; font-weight: 700; }
+    .cursor { display: inline-block; width: 8px; height: 14px; background: #fff; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 4px; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Tombol Back di Console */
-    .console-back-btn { display: none; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 44px; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 15px; transition: 0.2s; }
-    .console-back-btn:hover { background: rgba(255,255,255,0.1); }
-
-    /* Browser Preview */
-    .browser-bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    /* Browser Window Preview */
+    .browser-window { background: #09090b; border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; height: 450px; }
+    .browser-bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #111114; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .browser-dots { display: flex; gap: 6px; }
     .browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
-    .browser-dots span:last-child { background: #fff; }
+    .browser-dots span:first-child { background: #ef4444; }
+    .browser-dots span:nth-child(2) { background: #f59e0b; }
+    .browser-dots span:last-child { background: #10b981; }
     .browser-url { flex: 1; height: 32px; background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; color: #a1a1aa; }
     
-    .preview-stage { position: relative; flex: 1; min-height: 350px; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
-    .loading-box { text-align: center; }
-    .spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+    .preview-stage { position: relative; flex: 1; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
+    .loading-box { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px; }
+    .spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     
-    #previewFrame { width: 100%; height: 100%; border: none; background: #fff; display: none; position: absolute; inset: 0; }
+    #previewFrame { width: 100%; height: 100%; border: none; background: #ffffff; display: none; position: absolute; inset: 0; }
 
-    /* Modal */
-    .modal-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: 0.3s; }
-    .modal-overlay.show { opacity: 1; pointer-events: auto; }
-    .modal-content { background: #09090b; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; width: 100%; max-width: 400px; padding: 24px; transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-    .modal-overlay.show .modal-content { transform: translateY(0) scale(1); }
+    .back-btn { display: none; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 20px; transition: 0.2s; }
+    .back-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* POP-UP WARNING (Kenapa pake Webview) */
+    .popup-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 1; transition: opacity 0.3s; }
+    .popup-overlay.hidden { opacity: 0; pointer-events: none; }
+    .popup-card { background: #09090b; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; max-width: 450px; width: 100%; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform: scale(1); transition: transform 0.3s; }
+    .popup-icon { width: 60px; height: 60px; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #a855f7; margin: 0 auto 20px; }
+    .popup-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .popup-desc { font-size: 14px; color: #a1a1aa; line-height: 1.6; margin-bottom: 24px; }
+    .popup-btn { width: 100%; height: 48px; background: #ffffff; color: #000000; border: none; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; transition: 0.2s; }
+    .popup-btn:hover { background: #e4e4e7; }
 
     .hidden { display: none !important; }
     .bg-blur { filter: blur(15px); opacity: 0; pointer-events: none; transition: all 0.6s ease; }
@@ -95,16 +102,28 @@
 </head>
 <body class="font-sans antialiased text-white selection:bg-white selection:text-black">
 
+  <!-- POP-UP PENJELASAN WEBVIEW -->
+  <div id="infoPopup" class="popup-overlay">
+    <div class="popup-card">
+      <div class="popup-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h2 class="popup-title">Kenapa Ada Webview?</h2>
+      <p class="popup-desc">
+        Sistem Delta dan Platoboost memiliki <b>proteksi anti-bot</b> yang tinggi. Agar Key lu tetap aman dan berhasil didapatkan, HanzzEngine menggunakan <i>Secure Webview</i> di dalam halaman ini. Jadi lu nggak perlu pindah tab!
+      </p>
+      <button onclick="document.getElementById('infoPopup').classList.add('hidden')" class="popup-btn">Saya Mengerti</button>
+    </div>
+  </div>
+
   <canvas id="network-bg"></canvas>
 
-  <div id="mainWrapper" class="wrapper">
-    <!-- HEADER -->
-    <header>
-      <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
-      <div class="brand-title">HANZZ<span>SECURITY</span></div>
-      <button id="creditButton" class="credit-btn"><i class="fa-solid fa-users"></i> Credits</button>
-    </header>
+  <!-- HEADER -->
+  <header>
+    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <div class="brand-title">HANZZ<span>SECURITY</span></div>
+    <button id="creditButton" class="credit-btn"><i class="fa-solid fa-users"></i> Credits</button>
+  </header>
 
+  <div class="wrapper">
     <!-- SECTION AWAL -->
     <main id="initialView">
       <div class="hero">
@@ -130,53 +149,42 @@
     <!-- SECTION WORKSPACE -->
     <main id="workspaceView">
       <div class="grid-layout">
-        <!-- KIRI: TERMINAL -->
+        <!-- KIRI: CONSOLE -->
         <div class="panel-card">
           <div class="panel-header">
             <div style="font-size: 13px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
-              <i class="fa-solid fa-terminal"></i> EXECUTION TERMINAL
+              <i class="fa-solid fa-terminal"></i> EXECUTION LOG
             </div>
-            <div style="font-family: var(--font-mono); font-size: 10px; color: #71717a;">hanzz-engine</div>
           </div>
-          <div style="display: flex; flex-direction: column; flex: 1;">
-            <div id="terminal" class="terminal-body">
-              <div class="text-muted">HanzzSecurity <span class="text-white">v2.0</span></div>
-              <div class="text-muted">Ready<span class="text-white">_</span></div>
-            </div>
-            
-            <!-- TOMBOL KEMBALI (Muncul pas selesai) -->
-            <button id="backToInputBtn" class="console-back-btn">
-              <i class="fa-solid fa-arrow-rotate-left"></i> Bypass Link Lain
-            </button>
+          <div id="terminal" class="terminal-body">
+            <div class="text-muted">HanzzSecurity <span class="text-white">v2.2</span></div>
+            <div class="text-muted">Ready<span class="cursor"></span></div>
           </div>
+          <button id="backToInputBtn" class="back-btn"><i class="fa-solid fa-arrow-rotate-left"></i> Bypass Link Lain</button>
         </div>
 
-        <!-- KANAN: PREVIEW -->
-        <div class="panel-card">
+        <!-- KANAN: WEBVIEW (KEREN) -->
+        <div class="browser-window">
           <div class="browser-bar">
             <div class="browser-dots"><span></span><span></span><span></span></div>
-            <div class="browser-url"><i class="fa-solid fa-lock" style="font-size:10px;"></i> <span id="previewAddress">preview://waiting</span></div>
+            <div class="browser-url"><i class="fa-solid fa-lock" style="font-size:10px;"></i> <span id="previewAddress">secure-gateway://waiting</span></div>
           </div>
-          <div class="preview-stage" style="flex-direction: column; justify-content: center; align-items: center;">
-            
-            <!-- State Loading -->
-            <div id="loadingState" class="loading-box hidden">
+          <div class="preview-stage">
+            <div id="loadingState" class="loading-box">
               <div class="spinner"></div>
-              <div style="font-size: 13px; font-weight: 800; margin-bottom: 6px;">BYPASSING DELTA KEY</div>
+              <div style="font-size: 13px; font-weight: 800; margin-bottom: 6px;">MENYIAPKAN WEBVIEW</div>
               <div style="font-size: 11px; color: #71717a;">Tunggu sebentar...</div>
             </div>
-
-            <!-- Iframe Hasil -->
-            <iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+            <iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups"></iframe>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- MODAL -->
-  <div id="creditModal" class="modal-overlay">
-    <div class="modal-content">
+  <!-- MODAL CREDIT -->
+  <div id="creditModal" class="popup-overlay hidden">
+    <div class="popup-card">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
         <div>
           <div style="font-family: var(--font-mono); font-size: 10px; color: #a1a1aa; letter-spacing: 2px;">THE PEOPLE BEHIND IT</div>
@@ -199,26 +207,17 @@
   </div>
 
   <script>
-    // 1. Animasi Canvas
+    // KONFIGURASI API (API KEY UDAH BENER)
+    const API_KEY = "fcs_live_ff8116a26bea56e04330d6c249a26c3c88e9d4f1"; 
+    const API_ENDPOINT = "https://api.fazzcode.eu.cc/api/safelink";
+    
+    // Animasi Canvas
     const canvas = document.getElementById('network-bg');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    for (let i = 0; i < 80; i++) {
-      particles.push({
-        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 1.5,
-        radius: Math.random() * 2 + 1
-      });
-    }
-
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    for (let i = 0; i < 80; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*1.5, vy: (Math.random()-0.5)*1.5, radius: Math.random()*2+1 });
     function animateNetwork() {
       requestAnimationFrame(animateNetwork);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -226,45 +225,33 @@
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'; ctx.fill();
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'; ctx.fill();
         particles.forEach(p2 => {
-          const dx = p.x - p2.x, dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
-            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / 150})`;
-            ctx.lineWidth = 1; ctx.stroke();
-          }
+          const dx = p.x - p2.x, dy = p.y - p2.y, dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 150) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.strokeStyle = `rgba(255, 255, 255, ${1-dist/150})`; ctx.lineWidth = 1; ctx.stroke(); }
         });
       });
     }
     animateNetwork();
 
-    // 2. Logic Bypass
-    const API_KEY = "fcs_live_ff8116a26bea56e04330d6c249a26c3c88e9d4f1"; // UDAH BENER
-    const API_ENDPOINT = "https://api.fazzcode.eu.cc/api/safelink";
-    
+    // Logic DOM
     const form = document.getElementById('analyzerForm');
     const input = document.getElementById('urlInput');
     const executeButton = document.getElementById('executeButton');
     const executeIcon = document.getElementById('executeIcon');
     const executeText = document.getElementById('executeText');
     const terminal = document.getElementById('terminal');
-    
     const loadingState = document.getElementById('loadingState');
     const previewFrame = document.getElementById('previewFrame');
     const previewAddress = document.getElementById('previewAddress');
     const backToInputBtn = document.getElementById('backToInputBtn');
-    
     const initialView = document.getElementById('initialView');
     const workspaceView = document.getElementById('workspaceView');
-    const mainWrapper = document.getElementById('mainWrapper');
 
     function addLog(message, colorClass = 'text-muted') {
       const line = document.createElement('div');
       line.className = `terminal-line ${colorClass}`;
-      line.innerHTML = message;
+      line.innerHTML = `<i class="fa-solid fa-angle-right" style="margin-top:4px; font-size:10px;"></i> <span>${message}</span>`;
       terminal.appendChild(line);
       terminal.scrollTop = terminal.scrollHeight;
     }
@@ -274,104 +261,88 @@
       const targetUrl = input.value.trim();
       if (!targetUrl || !targetUrl.startsWith('http')) return alert("URL Tidak Valid!");
 
-      // Reset UI tiap kali klik
       backToInputBtn.style.display = 'none';
       executeIcon.className = 'fa-solid fa-circle-notch fa-spin';
-      executeText.textContent = 'Processing...';
+      executeText.textContent = 'Memproses...';
       executeButton.disabled = true;
       
       initialView.classList.add('bg-blur');
       
       setTimeout(async () => {
         initialView.classList.add('hidden');
-        mainWrapper.classList.add('narrow');
         workspaceView.classList.add('active');
-        
-        previewAddress.textContent = 'bypassing://delta-key';
-        loadingState.classList.remove('hidden');
+
+        previewAddress.textContent = 'connecting://secure-gateway';
+        loadingState.style.display = 'flex';
         previewFrame.style.display = 'none';
 
         terminal.innerHTML = '';
         const logs = [
-          '> Initializing Hanzz-Engine...',
-          '> Analyzing target structure...',
-          '> Bypassing tracking parameters...',
-          '> Establishing secure tunnel...',
-          '> Sending request to Hanzz-API...',
-          '> Awaiting server response...'
+          'Initializing Hanzz-Engine...',
+          'Analyzing target structure...',
+          'Bypassing tracking parameters...',
+          'Establishing secure tunnel...',
+          'Sending request to API...',
+          'Awaiting server response...'
         ];
 
         logs.forEach((log, index) => {
-          setTimeout(() => {
-            addLog(log, index === 5 ? 'text-white' : 'text-muted');
-          }, 600 * (index + 1));
+          setTimeout(() => { addLog(log, index === 5 ? 'text-white' : 'text-muted'); }, 400 * (index + 1));
         });
 
-        // Tembak API
         try {
+          // Nembak API
           const res = await fetch(`${API_ENDPOINT}?url=${encodeURIComponent(targetUrl)}&api_key=${API_KEY}`);
           if (!res.ok) throw new Error("Server error " + res.status);
-          
           const data = await res.json();
           
+          if (data.status !== 'success' || !data.result || !data.result.destination) {
+            throw new Error(data.message || "Format API salah.");
+          }
+
           setTimeout(() => {
-            if (data.status === 'success' && data.result && data.result.destination) {
-              addLog('<i class="fa-solid fa-check-circle mr-1"></i> [SUCCESS] Destination found!', 'text-green');
-              addLog(`<i class="fa-solid fa-key mr-1"></i> Silakan ambil key di layar preview.`, 'text-white');
-              
-              // Tampilin Iframe
-              loadingState.classList.add('hidden');
-              previewFrame.style.display = 'block';
-              
-              const destUrl = data.result.destination;
-              previewAddress.textContent = destUrl.replace('https://','').substring(0, 25) + '...';
-              previewFrame.src = destUrl;
-
-              // Munculin tombol Back
-              backToInputBtn.style.display = 'flex';
-
-              // Balikin tombol execute
-              executeIcon.className = 'fa-solid fa-bolt';
-              executeText.textContent = 'Bypass Key Sekarang';
-              executeButton.disabled = false;
-
-            } else {
-              throw new Error(data.message || "Gagal bypass, format API salah.");
-            }
-          }, 4200);
-
-        } catch (err) {
-          setTimeout(() => {
-            addLog(`<i class="fa-solid fa-triangle-exclamation mr-1"></i> [ERROR] ${err.message}`, 'text-red');
-            loadingState.classList.add('hidden');
+            addLog('SUCCESS: Destination found!', 'text-green');
+            addLog('Rendering secure webview...', 'text-white');
             
-            // Balikin tombol execute
+            // Munculin Webview (Iframe)
+            loadingState.style.display = 'none';
+            previewFrame.style.display = 'block';
+            
+            const destUrl = data.result.destination;
+            previewAddress.textContent = destUrl.replace('https://','').substring(0, 25) + '...';
+            previewFrame.src = destUrl;
+
+            backToInputBtn.style.display = 'flex';
             executeIcon.className = 'fa-solid fa-bolt';
             executeText.textContent = 'Bypass Key Sekarang';
             executeButton.disabled = false;
-          }, 4200);
+
+          }, 2800);
+
+        } catch (err) {
+          setTimeout(() => {
+            addLog(`ERROR: ${err.message}`, 'text-red');
+            loadingState.style.display = 'none';
+            executeIcon.className = 'fa-solid fa-bolt';
+            executeText.textContent = 'Bypass Key Sekarang';
+            executeButton.disabled = false;
+            backToInputBtn.style.display = 'flex';
+          }, 2800);
         }
-      }, 400);
+      }, 300);
     });
 
-    // Logic Tombol Kembali (Biar bisa bypass link baru)
     backToInputBtn.addEventListener('click', () => {
-      // Reset Input
       input.value = '';
-      
-      // Sembunyiin Workspace
       workspaceView.classList.remove('active');
-      mainWrapper.classList.remove('narrow');
-      
-      // Munculin Initial View
       initialView.classList.remove('hidden', 'bg-blur');
     });
 
-    // Modal
+    // Modal Credit
     const modal = document.getElementById('creditModal');
-    document.getElementById('creditButton').addEventListener('click', () => modal.classList.add('show'));
-    document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('show'));
-    document.getElementById('doneModal').addEventListener('click', () => modal.classList.remove('show'));
+    document.getElementById('creditButton').addEventListener('click', () => modal.classList.remove('hidden'));
+    document.getElementById('closeModal').addEventListener('click', () => modal.classList.add('hidden'));
+    document.getElementById('doneModal').addEventListener('click', () => modal.classList.add('hidden'));
   </script>
 </body>
 </html>
