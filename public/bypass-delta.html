@@ -9,77 +9,65 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
   <style>
-    /* ─── RESET & DASAR ─── */
     :root { color-scheme: dark; --font-sans: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #000000; color: #ffffff; font-family: var(--font-sans); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    body { background-color: #000000; color: #ffffff; font-family: var(--font-sans); min-height: 100vh; overflow-x: hidden; }
     
-    /* ─── CANVAS BACKGROUND ─── */
     #network-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.6; }
-    
-    /* ─── CONTAINER UTAMA ─── */
     .wrapper { max-width: 1440px; margin: 0 auto; min-height: 100vh; padding: 0 20px; position: relative; z-index: 10; transition: all 0.7s ease; }
     .wrapper.narrow { max-width: 1000px; }
 
-    /* ─── HEADER ─── */
+    /* Header */
     header { display: flex; align-items: center; justify-content: space-between; height: 76px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .back-link { display: inline-flex; align-items: center; gap: 8px; color: #a1a1aa; font-size: 14px; font-weight: 500; text-decoration: none; transition: 0.2s; }
     .back-link:hover { color: #fff; }
-    .back-link i { transition: transform 0.2s; }
-    .back-link:hover i { transform: translateX(-4px); }
-    
     .brand-title { position: absolute; left: 50%; transform: translateX(-50%); font-size: 14px; font-weight: 800; letter-spacing: 0.25em; color: #fff; }
     .brand-title span { color: #52525b; }
-    
     .credit-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #d4d4d8; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; backdrop-filter: blur(10px); }
     .credit-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); color: #fff; }
 
-    /* ─── HERO SECTION ─── */
+    /* Hero */
     .hero { padding: 60px 0 40px; text-align: center; }
     .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 24px; }
     .badge-dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; box-shadow: 0 0 12px #fff; animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    
     .hero h1 { font-size: clamp(32px, 6vw, 64px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
     .hero p { color: #a1a1aa; font-size: 15px; line-height: 1.7; max-width: 600px; margin: 0 auto; }
 
-    /* ─── FORM INPUT ─── */
-    .form-container { max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; backdrop-filter: blur(20px); box-shadow: 0 0 50px rgba(255,255,255,0.05); transition: 0.3s; }
-    .form-container:hover { border-color: rgba(255,255,255,0.3); box-shadow: 0 0 60px rgba(255,255,255,0.1); }
-    
+    /* Form Input */
+    .form-container { max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; backdrop-filter: blur(20px); box-shadow: 0 0 50px rgba(255,255,255,0.05); }
     .input-label { display: block; color: #a1a1aa; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
     .input-group { position: relative; margin-bottom: 20px; }
     .input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #71717a; font-size: 18px; }
     .input-group input { width: 100%; height: 56px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 0 16px 0 48px; color: #fff; font-family: var(--font-mono); font-size: 13px; outline: none; transition: 0.3s; }
     .input-group input:focus { border-color: rgba(255,255,255,0.8); box-shadow: 0 0 0 3px rgba(255,255,255,0.1); }
     
-    .error-text { display: none; color: #f87171; font-size: 11px; font-weight: 500; margin-top: -10px; margin-bottom: 16px; }
-    .error-text.show { display: block; }
-
     .submit-btn { width: 100%; height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #ffffff; color: #000000; border: none; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.3s; }
     .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ─── WORKSPACE (CONSOLE & PREVIEW) ─── */
+    /* Workspace Grid */
     #workspaceView { display: none; padding-top: 40px; animation: slideUpFade 0.6s cubic-bezier(0.16,1,0.3,1) both; }
     #workspaceView.active { display: block; }
     @keyframes slideUpFade { from { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
-
     .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
     @media (min-width: 1024px) { .grid-layout { grid-template-columns: 1fr 1fr; } }
 
-    /* Card Style */
+    /* Panels */
     .panel-card { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; backdrop-filter: blur(20px); overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
     .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .panel-title { font-size: 13px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
     
-    /* Terminal */
-    .terminal-body { flex: 1; min-height: 240px; padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; background: #000; overflow-y: auto; }
+    .terminal-body { flex: 1; min-height: 280px; max-height: 400px; padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; background: #000; overflow-y: auto; }
     .terminal-line { opacity: 0; transform: translateX(-10px); animation: lineIn 0.3s ease forwards; margin-bottom: 8px; }
     @keyframes lineIn { to { opacity: 1; transform: translateX(0); } }
     .text-muted { color: #71717a; }
     .text-white { color: #fff; font-weight: 700; }
     .text-red { color: #f87171; }
+    .text-green { color: #34d399; font-weight: 700; }
+
+    /* Tombol Back di Console */
+    .console-back-btn { display: none; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 44px; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 15px; transition: 0.2s; }
+    .console-back-btn:hover { background: rgba(255,255,255,0.1); }
 
     /* Browser Preview */
     .browser-bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -94,14 +82,13 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     
     #previewFrame { width: 100%; height: 100%; border: none; background: #fff; display: none; position: absolute; inset: 0; }
-    
+
     /* Modal */
     .modal-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: 0.3s; }
     .modal-overlay.show { opacity: 1; pointer-events: auto; }
     .modal-content { background: #09090b; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; width: 100%; max-width: 400px; padding: 24px; transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.34,1.56,0.64,1); }
     .modal-overlay.show .modal-content { transform: translateY(0) scale(1); }
 
-    /* Utility */
     .hidden { display: none !important; }
     .bg-blur { filter: blur(15px); opacity: 0; pointer-events: none; transition: all 0.6s ease; }
   </style>
@@ -133,7 +120,6 @@
             <i class="fa-solid fa-key"></i>
             <input id="urlInput" type="url" placeholder="https://gateway.platoboost.com/a/..." required />
           </div>
-          <p id="inputError" class="error-text"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Masukkan URL yang valid (http/https).</p>
           <button id="executeButton" type="submit" class="submit-btn">
             <i id="executeIcon" class="fa-solid fa-bolt"></i> <span id="executeText">Bypass Key Sekarang</span>
           </button>
@@ -147,15 +133,21 @@
         <!-- KIRI: TERMINAL -->
         <div class="panel-card">
           <div class="panel-header">
-            <div class="panel-title"><i class="fa-solid fa-terminal"></i> EXECUTION TERMINAL</div>
-            <div style="font-family: var(--font-mono); font-size: 10px; color: #71717a;">bypass-engine</div>
+            <div style="font-size: 13px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-terminal"></i> EXECUTION TERMINAL
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 10px; color: #71717a;">hanzz-engine</div>
           </div>
-          <div id="terminal" class="terminal-body">
-            <div class="text-muted">HanzzSecurity <span class="text-white">v2.0</span></div>
-            <div class="text-muted">Ready<span class="text-white">_</span></div>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding: 12px 16px; background: #09090b; border-top: 1px solid rgba(255,255,255,0.1); font-family: var(--font-mono); font-size: 10px; color: #71717a;">
-            <span>STATUS</span><span id="consoleStatus">IDLE</span>
+          <div style="display: flex; flex-direction: column; flex: 1;">
+            <div id="terminal" class="terminal-body">
+              <div class="text-muted">HanzzSecurity <span class="text-white">v2.0</span></div>
+              <div class="text-muted">Ready<span class="text-white">_</span></div>
+            </div>
+            
+            <!-- TOMBOL KEMBALI (Muncul pas selesai) -->
+            <button id="backToInputBtn" class="console-back-btn">
+              <i class="fa-solid fa-arrow-rotate-left"></i> Bypass Link Lain
+            </button>
           </div>
         </div>
 
@@ -163,19 +155,19 @@
         <div class="panel-card">
           <div class="browser-bar">
             <div class="browser-dots"><span></span><span></span><span></span></div>
-            <div class="browser-url"><i class="fa-solid fa-lock" style="font-size:10px;"></i> <span id="previewAddress">delta-key://processing</span></div>
+            <div class="browser-url"><i class="fa-solid fa-lock" style="font-size:10px;"></i> <span id="previewAddress">preview://waiting</span></div>
           </div>
-          <div class="preview-stage">
-            <div id="loadingState" class="loading-box">
+          <div class="preview-stage" style="flex-direction: column; justify-content: center; align-items: center;">
+            
+            <!-- State Loading -->
+            <div id="loadingState" class="loading-box hidden">
               <div class="spinner"></div>
               <div style="font-size: 13px; font-weight: 800; margin-bottom: 6px;">BYPASSING DELTA KEY</div>
               <div style="font-size: 11px; color: #71717a;">Tunggu sebentar...</div>
             </div>
+
+            <!-- Iframe Hasil -->
             <iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding: 12px 16px; background: #09090b; border-top: 1px solid rgba(255,255,255,0.1); font-size: 10px; color: #a1a1aa;">
-            <div style="display:flex; align-items:center; gap:6px;"><span id="previewDot" style="width:6px; height:6px; background:#fff; border-radius:50%;"></span> <span id="previewStatus">Processing...</span></div>
-            <span style="font-family: var(--font-mono);">SECURE</span>
           </div>
         </div>
       </div>
@@ -250,29 +242,24 @@
     animateNetwork();
 
     // 2. Logic Bypass
-    const API_KEY = "fcs_live_ff8116a26bea56e04330d6c249a26c3c88e9d41";
+    const API_KEY = "fcs_live_ff8116a26bea56e04330d6c249a26c3c88e9d4f1"; // UDAH BENER
     const API_ENDPOINT = "https://api.fazzcode.eu.cc/api/safelink";
     
     const form = document.getElementById('analyzerForm');
     const input = document.getElementById('urlInput');
-    const inputError = document.getElementById('inputError');
     const executeButton = document.getElementById('executeButton');
     const executeIcon = document.getElementById('executeIcon');
     const executeText = document.getElementById('executeText');
     const terminal = document.getElementById('terminal');
-    const consoleStatus = document.getElementById('consoleStatus');
+    
     const loadingState = document.getElementById('loadingState');
     const previewFrame = document.getElementById('previewFrame');
     const previewAddress = document.getElementById('previewAddress');
-    const previewStatus = document.getElementById('previewStatus');
-    const previewDot = document.getElementById('previewDot');
+    const backToInputBtn = document.getElementById('backToInputBtn');
     
     const initialView = document.getElementById('initialView');
     const workspaceView = document.getElementById('workspaceView');
     const mainWrapper = document.getElementById('mainWrapper');
-
-    let timers = [];
-    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
     function addLog(message, colorClass = 'text-muted') {
       const line = document.createElement('div');
@@ -282,110 +269,109 @@
       terminal.scrollTop = terminal.scrollHeight;
     }
 
-    function setLoading(isLoading) {
-      executeButton.disabled = isLoading;
-      if (isLoading) {
-        executeIcon.className = 'fa-solid fa-circle-notch fa-spin';
-        executeText.textContent = 'Processing...';
-      } else {
-        executeIcon.className = 'fa-solid fa-bolt';
-        executeText.textContent = 'Bypass Key Sekarang';
-      }
-    }
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
       const targetUrl = input.value.trim();
+      if (!targetUrl || !targetUrl.startsWith('http')) return alert("URL Tidak Valid!");
 
-      if (!targetUrl || !targetUrl.startsWith('http')) {
-        inputError.classList.add('show');
-        return;
-      }
-      inputError.classList.remove('show');
-      clearTimers();
-
+      // Reset UI tiap kali klik
+      backToInputBtn.style.display = 'none';
+      executeIcon.className = 'fa-solid fa-circle-notch fa-spin';
+      executeText.textContent = 'Processing...';
+      executeButton.disabled = true;
+      
       initialView.classList.add('bg-blur');
       
-      setTimeout(() => {
+      setTimeout(async () => {
         initialView.classList.add('hidden');
         mainWrapper.classList.add('narrow');
         workspaceView.classList.add('active');
         
-        terminal.innerHTML = '';
-        consoleStatus.textContent = 'RUNNING';
-        consoleStatus.style.color = '#fff';
-        setLoading(true);
-
+        previewAddress.textContent = 'bypassing://delta-key';
         loadingState.classList.remove('hidden');
         previewFrame.style.display = 'none';
-        previewAddress.textContent = 'bypassing://delta-key';
-        previewStatus.textContent = 'Connecting...';
 
+        terminal.innerHTML = '';
         const logs = [
-          '> Initializing Delta bypass module...',
-          '> Validating key URL...',
-          '> Sending request to FazzCode API...',
+          '> Initializing Hanzz-Engine...',
+          '> Analyzing target structure...',
+          '> Bypassing tracking parameters...',
+          '> Establishing secure tunnel...',
+          '> Sending request to Hanzz-API...',
           '> Awaiting server response...'
         ];
 
         logs.forEach((log, index) => {
-          timers.push(setTimeout(() => {
-            addLog(log, index === 3 ? 'text-white' : 'text-muted');
-            if (index === 2) previewStatus.textContent = 'API Processing...';
-          }, 600 * (index + 1)));
+          setTimeout(() => {
+            addLog(log, index === 5 ? 'text-white' : 'text-muted');
+          }, 600 * (index + 1));
         });
 
-        fetch(`${API_ENDPOINT}?url=${encodeURIComponent(targetUrl)}&api_key=${API_KEY}`)
-          .then(res => {
-             if(!res.ok) throw new Error("Server error " + res.status);
-             return res.json();
-          })
-          .then(data => {
-            timers.push(setTimeout(() => {
-              if (data.status === 'success' && data.result && data.result.destination) {
-                addLog('<i class="fa-solid fa-check-circle mr-1"></i> [SUCCESS] Destination found!', 'text-white');
-                addLog(`<i class="fa-solid fa-arrow-right mr-1"></i> Redirecting preview...`, 'text-muted');
-                
-                consoleStatus.textContent = 'COMPLETE';
-                setLoading(false);
-
-                loadingState.classList.add('hidden');
-                previewFrame.style.display = 'block';
-                previewStatus.textContent = 'Preview loaded';
-                previewDot.style.background = '#34d399';
-                
-                const destUrl = data.result.destination;
-                previewAddress.textContent = destUrl.replace('https://','').substring(0, 25) + '...';
-                previewFrame.src = destUrl;
-              } else {
-                throw new Error(data.message || "Gagal bypass key.");
-              }
-            }, 1500));
-          })
-          .catch(err => {
-            timers.push(setTimeout(() => {
-              addLog(`<i class="fa-solid fa-triangle-exclamation mr-1"></i> [ERROR] ${err.message}`, 'text-red');
-              consoleStatus.textContent = 'FAILED';
-              consoleStatus.style.color = '#f87171';
-              setLoading(false);
+        // Tembak API
+        try {
+          const res = await fetch(`${API_ENDPOINT}?url=${encodeURIComponent(targetUrl)}&api_key=${API_KEY}`);
+          if (!res.ok) throw new Error("Server error " + res.status);
+          
+          const data = await res.json();
+          
+          setTimeout(() => {
+            if (data.status === 'success' && data.result && data.result.destination) {
+              addLog('<i class="fa-solid fa-check-circle mr-1"></i> [SUCCESS] Destination found!', 'text-green');
+              addLog(`<i class="fa-solid fa-key mr-1"></i> Silakan ambil key di layar preview.`, 'text-white');
               
+              // Tampilin Iframe
               loadingState.classList.add('hidden');
-              previewStatus.textContent = 'Failed';
-              previewDot.style.background = '#f87171';
-            }, 1500));
-          });
+              previewFrame.style.display = 'block';
+              
+              const destUrl = data.result.destination;
+              previewAddress.textContent = destUrl.replace('https://','').substring(0, 25) + '...';
+              previewFrame.src = destUrl;
 
+              // Munculin tombol Back
+              backToInputBtn.style.display = 'flex';
+
+              // Balikin tombol execute
+              executeIcon.className = 'fa-solid fa-bolt';
+              executeText.textContent = 'Bypass Key Sekarang';
+              executeButton.disabled = false;
+
+            } else {
+              throw new Error(data.message || "Gagal bypass, format API salah.");
+            }
+          }, 4200);
+
+        } catch (err) {
+          setTimeout(() => {
+            addLog(`<i class="fa-solid fa-triangle-exclamation mr-1"></i> [ERROR] ${err.message}`, 'text-red');
+            loadingState.classList.add('hidden');
+            
+            // Balikin tombol execute
+            executeIcon.className = 'fa-solid fa-bolt';
+            executeText.textContent = 'Bypass Key Sekarang';
+            executeButton.disabled = false;
+          }, 4200);
+        }
       }, 400);
     });
 
-    input.addEventListener('input', () => inputError.classList.remove('show'));
+    // Logic Tombol Kembali (Biar bisa bypass link baru)
+    backToInputBtn.addEventListener('click', () => {
+      // Reset Input
+      input.value = '';
+      
+      // Sembunyiin Workspace
+      workspaceView.classList.remove('active');
+      mainWrapper.classList.remove('narrow');
+      
+      // Munculin Initial View
+      initialView.classList.remove('hidden', 'bg-blur');
+    });
 
     // Modal
     const modal = document.getElementById('creditModal');
     document.getElementById('creditButton').addEventListener('click', () => modal.classList.add('show'));
     document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('show'));
     document.getElementById('doneModal').addEventListener('click', () => modal.classList.remove('show'));
-    modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('show') });
   </script>
 </body>
 </html>
