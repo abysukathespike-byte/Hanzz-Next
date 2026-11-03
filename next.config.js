@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 
+// ==== TAMBAH TOOL BARU DI SINI ====
+// Format: '/link-di-browser': 'nama-file.html' (file ada di folder public/)
+// Lalu di owner panel > Tools, isi Link dengan /link-di-browser
+const TOOL_PAGES = {
+  'gen-sc': 'gen-sc.html',
+  'bypass-delta': 'bypass-delta.html',
+};
+
 // Header keamanan. Microphone diizinkan hanya untuk situs ini sendiri (dibutuhkan voice note di DM).
 const securityHeaders = [
   {
@@ -20,16 +28,21 @@ const nextConfig = {
     return [{ source: '/(.*)', headers: securityHeaders }];
   },
   async rewrites() {
+    const toolRewrites = Object.entries(TOOL_PAGES).map(([link, file]) => ({
+      source: link,
+      destination: '/' + file,
+    }));
     return {
       beforeFiles: [
         { source: '/', destination: '/index.html' },
         { source: '/bypass-delta', destination: '/bypass-delta.html' },
         { source: '/pp', destination: '/index.html' },
         { source: '/t-o-u', destination: '/index.html' },
-        { source: '/api/config.js', destination: '/api/config' }
-      ]
+        { source: '/api/config.js', destination: '/api/config' },
+        ...toolRewrites,
+      ],
     };
-  }
+  },
 };
 
 module.exports = nextConfig;
