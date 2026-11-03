@@ -16,7 +16,6 @@
     #network-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.6; }
     .wrapper { max-width: 1000px; width: 100%; min-height: 100vh; padding: 0 20px; position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: center; transition: all 0.5s ease; }
 
-    /* Header */
     header { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; height: 76px; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .back-link { display: inline-flex; align-items: center; gap: 8px; color: #a1a1aa; font-size: 14px; font-weight: 500; text-decoration: none; transition: 0.2s; }
     .back-link:hover { color: #fff; }
@@ -25,7 +24,6 @@
     .credit-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #d4d4d8; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; backdrop-filter: blur(10px); }
     .credit-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); color: #fff; }
 
-    /* Hero */
     .hero { padding: 100px 0 40px; text-align: center; }
     .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 24px; }
     .badge-dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; box-shadow: 0 0 12px #fff; animation: pulse 2s infinite; }
@@ -33,7 +31,6 @@
     .hero h1 { font-size: clamp(32px, 6vw, 64px); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
     .hero p { color: #a1a1aa; font-size: 15px; line-height: 1.7; max-width: 600px; margin: 0 auto; }
 
-    /* Form Input */
     .form-container { max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; backdrop-filter: blur(20px); box-shadow: 0 0 50px rgba(255,255,255,0.05); }
     .input-label { display: block; color: #a1a1aa; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
     .input-group { position: relative; margin-bottom: 20px; }
@@ -45,14 +42,12 @@
     .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Workspace Layout (Split Screen) */
     #workspaceView { display: none; width: 100%; padding-top: 100px; padding-bottom: 40px; animation: slideUpFade 0.5s ease both; }
     #workspaceView.active { display: block; }
     @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
     @media (min-width: 900px) { .grid-layout { grid-template-columns: 350px 1fr; } }
 
-    /* Panel Console */
     .panel-card { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; backdrop-filter: blur(20px); overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
     .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #09090b; border-bottom: 1px solid rgba(255,255,255,0.1); }
     
@@ -66,8 +61,7 @@
     .cursor { display: inline-block; width: 8px; height: 14px; background: #fff; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 4px; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Browser Window Preview */
-    .browser-window { background: #09090b; border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; height: 450px; }
+    .browser-window { background: #09090b; border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; height: 500px; }
     .browser-bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #111114; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .browser-dots { display: flex; gap: 6px; }
     .browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
@@ -86,15 +80,13 @@
     .back-btn { display: none; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 20px; transition: 0.2s; }
     .back-btn:hover { background: rgba(255,255,255,0.1); }
 
-    /* POP-UP WARNING (Kenapa pake Webview) */
     .popup-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 1; transition: opacity 0.3s; }
     .popup-overlay.hidden { opacity: 0; pointer-events: none; }
-    .popup-card { background: #09090b; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; max-width: 450px; width: 100%; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform: scale(1); transition: transform 0.3s; }
+    .popup-card { background: #09090b; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; max-width: 450px; width: 100%; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
     .popup-icon { width: 60px; height: 60px; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #a855f7; margin: 0 auto 20px; }
     .popup-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 12px; }
     .popup-desc { font-size: 14px; color: #a1a1aa; line-height: 1.6; margin-bottom: 24px; }
     .popup-btn { width: 100%; height: 48px; background: #ffffff; color: #000000; border: none; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; transition: 0.2s; }
-    .popup-btn:hover { background: #e4e4e7; }
 
     .hidden { display: none !important; }
     .bg-blur { filter: blur(15px); opacity: 0; pointer-events: none; transition: all 0.6s ease; }
@@ -102,7 +94,6 @@
 </head>
 <body class="font-sans antialiased text-white selection:bg-white selection:text-black">
 
-  <!-- POP-UP PENJELASAN WEBVIEW -->
   <div id="infoPopup" class="popup-overlay">
     <div class="popup-card">
       <div class="popup-icon"><i class="fa-solid fa-shield-halved"></i></div>
@@ -116,7 +107,6 @@
 
   <canvas id="network-bg"></canvas>
 
-  <!-- HEADER -->
   <header>
     <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
     <div class="brand-title">HANZZ<span>SECURITY</span></div>
@@ -124,7 +114,6 @@
   </header>
 
   <div class="wrapper">
-    <!-- SECTION AWAL -->
     <main id="initialView">
       <div class="hero">
         <div class="badge"><span class="badge-dot"></span> DELTA EXECUTOR / KEY BYPASSER</div>
@@ -146,10 +135,8 @@
       </div>
     </main>
 
-    <!-- SECTION WORKSPACE -->
     <main id="workspaceView">
       <div class="grid-layout">
-        <!-- KIRI: CONSOLE -->
         <div class="panel-card">
           <div class="panel-header">
             <div style="font-size: 13px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
@@ -163,7 +150,6 @@
           <button id="backToInputBtn" class="back-btn"><i class="fa-solid fa-arrow-rotate-left"></i> Bypass Link Lain</button>
         </div>
 
-        <!-- KANAN: WEBVIEW (KEREN) -->
         <div class="browser-window">
           <div class="browser-bar">
             <div class="browser-dots"><span></span><span></span><span></span></div>
@@ -175,14 +161,13 @@
               <div style="font-size: 13px; font-weight: 800; margin-bottom: 6px;">MENYIAPKAN WEBVIEW</div>
               <div style="font-size: 11px; color: #71717a;">Tunggu sebentar...</div>
             </div>
-            <iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups"></iframe>
+            <iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" referrerpolicy="no-referrer"></iframe>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- MODAL CREDIT -->
   <div id="creditModal" class="popup-overlay hidden">
     <div class="popup-card">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
@@ -207,18 +192,16 @@
   </div>
 
   <script>
-    // KONFIGURASI API (API KEY UDAH BENER)
     const API_KEY = "fcs_live_ff8116a26bea56e04330d6c249a26c3c88e9d4f1"; 
     const API_ENDPOINT = "https://api.fazzcode.eu.cc/api/safelink";
     
-    // Animasi Canvas
     const canvas = document.getElementById('network-bg');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    const resizeCanvas = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
     for (let i = 0; i < 80; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*1.5, vy: (Math.random()-0.5)*1.5, radius: Math.random()*2+1 });
-    function animateNetwork() {
+    const animateNetwork = () => {
       requestAnimationFrame(animateNetwork);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
@@ -231,10 +214,9 @@
           if (dist < 150) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.strokeStyle = `rgba(255, 255, 255, ${1-dist/150})`; ctx.lineWidth = 1; ctx.stroke(); }
         });
       });
-    }
+    };
     animateNetwork();
 
-    // Logic DOM
     const form = document.getElementById('analyzerForm');
     const input = document.getElementById('urlInput');
     const executeButton = document.getElementById('executeButton');
@@ -248,13 +230,13 @@
     const initialView = document.getElementById('initialView');
     const workspaceView = document.getElementById('workspaceView');
 
-    function addLog(message, colorClass = 'text-muted') {
+    const addLog = (message, colorClass = 'text-muted') => {
       const line = document.createElement('div');
       line.className = `terminal-line ${colorClass}`;
       line.innerHTML = `<i class="fa-solid fa-angle-right" style="margin-top:4px; font-size:10px;"></i> <span>${message}</span>`;
       terminal.appendChild(line);
       terminal.scrollTop = terminal.scrollHeight;
-    }
+    };
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -291,33 +273,45 @@
         });
 
         try {
-          // Nembak API
           const res = await fetch(`${API_ENDPOINT}?url=${encodeURIComponent(targetUrl)}&api_key=${API_KEY}`);
-          if (!res.ok) throw new Error("Server error " + res.status);
           const data = await res.json();
           
-          if (data.status !== 'success' || !data.result || !data.result.destination) {
-            throw new Error(data.message || "Format API salah.");
-          }
-
           setTimeout(() => {
+            if (res.status === 429 || (data.message && data.message.toLowerCase().includes('limit'))) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const dateStr = tomorrow.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                
+                addLog(`ERROR: Limit global API sudah habis!`, 'text-red');
+                addLog(`Silakan coba lagi pada ${dateStr}.`, 'text-white');
+                
+                loadingState.style.display = 'none';
+                executeIcon.className = 'fa-solid fa-bolt';
+                executeText.textContent = 'Bypass Key Sekarang';
+                executeButton.disabled = false;
+                backToInputBtn.style.display = 'flex';
+                return;
+            }
+
+            if (data.status !== 'success' || !data.result || !data.result.destination) {
+              throw new Error(data.message || "Format API salah.");
+            }
+
             addLog('SUCCESS: Destination found!', 'text-green');
             addLog('Rendering secure webview...', 'text-white');
             
-            // Munculin Webview (Iframe)
-            loadingState.style.display = 'none';
-            previewFrame.style.display = 'block';
-            
             const destUrl = data.result.destination;
-            previewAddress.textContent = destUrl.replace('https://','').substring(0, 25) + '...';
             previewFrame.src = destUrl;
+            previewFrame.style.display = 'block';
+            loadingState.style.display = 'none';
+            previewAddress.textContent = destUrl.replace('https://','').substring(0, 25) + '...';
 
             backToInputBtn.style.display = 'flex';
             executeIcon.className = 'fa-solid fa-bolt';
             executeText.textContent = 'Bypass Key Sekarang';
             executeButton.disabled = false;
 
-          }, 2800);
+          }, 2500);
 
         } catch (err) {
           setTimeout(() => {
@@ -327,7 +321,7 @@
             executeText.textContent = 'Bypass Key Sekarang';
             executeButton.disabled = false;
             backToInputBtn.style.display = 'flex';
-          }, 2800);
+          }, 2500);
         }
       }, 300);
     });
@@ -338,7 +332,6 @@
       initialView.classList.remove('hidden', 'bg-blur');
     });
 
-    // Modal Credit
     const modal = document.getElementById('creditModal');
     document.getElementById('creditButton').addEventListener('click', () => modal.classList.remove('hidden'));
     document.getElementById('closeModal').addEventListener('click', () => modal.classList.add('hidden'));

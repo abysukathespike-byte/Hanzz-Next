@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Script Creator — Maintenance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <style>
+    :root { color-scheme: dark; --font-sans: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #000000; color: #ffffff; font-family: var(--font-sans); min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    
+    #network-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.4; }
+    
+    .container { position: relative; z-index: 10; text-align: center; padding: 40px 20px; max-width: 500px; width: 100%; }
+    
+    .icon-box { width: 80px; height: 80px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #a1a1aa; margin: 0 auto 24px; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    
+    h1 { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+    p { font-size: 14px; color: #a1a1aa; line-height: 1.6; margin-bottom: 32px; }
+    
+    .status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 8px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #f59e0b; margin-bottom: 30px; }
+    .status-dot { width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; box-shadow: 0 0 10px #f59e0b; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; background: #ffffff; color: #000000; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 800; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; }
+    .back-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body class="font-sans antialiased text-white selection:bg-white selection:text-black">
+
+  <canvas id="network-bg"></canvas>
+
+  <div class="container">
+    <div class="icon-box">
+      <i class="fa-solid fa-robot"></i>
+    </div>
+    
+    <div class="status-badge">
+      <span class="status-dot"></span> UNDER DEVELOPMENT
+    </div>
+
+    <h1>Script Creator AI</h1>
+    <p>Fitur AI untuk merakit script Roblox secara otomatis sedang dalam tahap pengembangan (Maintenance). Nantikan update selanjutnya!</p>
+
+    <a href="/" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
+    </a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('network-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    
+    const resizeCanvas = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    
+    for (let i = 0; i < 60; i++) {
+      particles.push({ 
+        x: Math.random()*canvas.width, 
+        y: Math.random()*canvas.height, 
+        vx: (Math.random()-0.5)*1.2, 
+        vy: (Math.random()-0.5)*1.2, 
+        radius: Math.random()*1.5+0.5 
+      });
+    }
+
+    const animateNetwork = () => {
+      requestAnimationFrame(animateNetwork);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); 
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; ctx.fill();
+        
+        particles.forEach(p2 => {
+          const dx = p.x - p2.x, dy = p.y - p2.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 150) { 
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); 
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1-dist/150 * 0.5})`; 
+            ctx.lineWidth = 0.8; ctx.stroke(); 
+          }
+        });
+      });
+    };
+    animateNetwork();
+  </script>
+</body>
+</html>
